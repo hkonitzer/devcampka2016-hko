@@ -37,3 +37,16 @@ integrierten [Generator](http://expressjs.com/en/starter/generator.html)
 
 Damit ist ein einfacher HTTP Server aufgesetzt, der eine (zunächst)
 leere Webseite unter [/](http://locahost:3000) ausgibt.
+
+## 2. Schritt
+
+Implementierung einer API zur Demonstration. Als Basis dienen Fragen und
+Antworten aus dem Kartenspiel ["Cards Against Humanity"](https://cardsagainsthumanity.com/)
+Es wird eine neue Route "/api" zugefügt, die die Endpunkte /api/answer,
+/api/question und /api/pick bereitstellt. Die Endpunkte wählen jeweils
+einen zufälligen Datensatz (Karten aus dem Spiel) aus und liefern ihn 
+als JSON zurück.
+
+Auf der HTML Seite (index.ejs) können alle drei API Requests getestet 
+werden.
+

@@ -1,8 +1,23 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 1em;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    height: 90%;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
+}
+
+li {
+    margin-top: 5px;
+}
+
+#answerContainer {
+    min-height: 80px;
+}
+
+.div-wrapper img {
+    position:fixed;
+    bottom: 1%;
+    right: 1%;
 }
