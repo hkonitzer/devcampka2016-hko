@@ -3,7 +3,7 @@
     "description": "Session-Beitrag 'Performance Monitoring von NodeJS Web-Apps mit dem ELK Stack' zum DevCamp Karlsruhe 23./24.09.2016 - http://www.campus-devcamp.de/devcamp-karlsruhe-23-24-09-2016/",
     "author": "Hendrik Konitzer <hkonitzer@heine.de>",
     "contributors": [],
-    "version": "0.0.0",
+    "version": "1.0.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/hkonitzer/devcampka2016-hko"
