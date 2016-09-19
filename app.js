@@ -24,4 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/api', apiRoutes);
 
+var logstash = require(__dirname + '/lib/logstash');
+console.log(logstash)
+
 module.exports = app;

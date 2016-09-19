@@ -50,3 +50,17 @@ als JSON zurück.
 Auf der HTML Seite (index.ejs) können alle drei API Requests getestet 
 werden.
 
+## 3. Schritt
+
+### Elastic Stack einrichten
+
+Zunächst wird der Elastic Stack gestartet. Nach dem Download der drei
+Pakete (Elasticsearch, Logstash und Kibana) einfach die Archive 
+entpacken und im jeweiligen <paket>/bin Verzeichnis aufrufen. 
+In der Reihenfolge muss zunächst Elasticsearch und dann Kibana gestartet
+werden - Kibana wird dann automatisch Verbindung zum nun laufenden lokalen
+Elasticsearch Server aufnehmen.
+
+### Logstash konfigurieren
+
+https://www.elastic.co/guide/en/logstash/current/advanced-pipeline.html
