@@ -21,10 +21,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Performance Monitoring START: store timings on request start
+// Beware: sequence matters, this have to be the first .use
+app.use(function(req, res, next) {
+    // you should use the internal field res._startAt (as this is more accurate) and skip this app.use, but this stays
+    // here for demonstration purposes
+    req.hrstart = process.hrtime();
+    next();
+});
+
 app.use('/', routes);
 app.use('/api', apiRoutes);
-
-var logstash = require(__dirname + '/lib/logstash');
-console.log(logstash)
 
 module.exports = app;
