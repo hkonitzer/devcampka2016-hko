@@ -60,7 +60,44 @@ entpacken und im jeweiligen <paket>/bin Verzeichnis aufrufen.
 In der Reihenfolge muss zunächst Elasticsearch und dann Kibana gestartet
 werden - Kibana wird dann automatisch Verbindung zum nun laufenden lokalen
 Elasticsearch Server aufnehmen.
+Logstash hingegen muss zunächst konfiguriert werden.
 
 ### Logstash konfigurieren
 
-https://www.elastic.co/guide/en/logstash/current/advanced-pipeline.html
+Logstash benötigt eine sog. Pipeline-Konfiguration [siehe Dokumentation](https://www.elastic.co/guide/en/logstash/current/advanced-pipeline.html)
+Konfiguriert wird ein "Input" und ein "Output":
+```
+input {
+     tcp {
+        codec => "json"
+        port => "3515"
+     }
+}
+```
+
+Als "Input" wird das TCP-Plugin via JSON Code benutzt, beides wird mitgeliefert.
+Es wird lediglich noch der Port konfiguriert, auf dem Logstash lauschen soll
+
+```
+output {
+    stdout {
+        codec => json
+    }
+    elasticsearch {
+        hosts => [ "localhost:9200" ]
+    }
+}
+```
+
+Als "Output" wird zunächst stdout für Debugging-Zwecke angelegt, damit wird 
+jeder Request an Logstash auf der Konsole gespiegelt. Dann wird das Elasticsearch
+Plugin (ebenfalls im Lieferumfang) benutzt, bei dem man nur Adresse und Port der
+zu benutzenden Elasticsearch Installation angeben muss (hier stehen die Default 
+ Werte aus dem Elasticsearch Paket)
+ 
+Die Konfiguration liegt auch hier [pipeline.conf](/docs/logstash/pipeline.conf)
+ 
+Nun kann auch Logstash gestartet werden.
+
+### Implementation in die ExpressJS Welt
+
