@@ -15,7 +15,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -24,9 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Performance Monitoring START: store timings on request start
 // Beware: sequence matters, this have to be the first .use
 app.use(function(req, res, next) {
-    // you should use the internal field res._startAt (as this is more accurate) and skip this app.use, but this stays
-    // here for demonstration purposes
     req.hrstart = process.hrtime();
+    if (typeof res._startTime === 'undefined') {
+        res._startTime = new Date();
+    }
     next();
 });
 
