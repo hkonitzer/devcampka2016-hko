@@ -47,6 +47,34 @@ Es wird eine neue Route "/api" zugefügt, die die Endpunkte /api/answer,
 einen zufälligen Datensatz (Karten aus dem Spiel) aus und liefern ihn 
 als JSON zurück.
 
-Auf der HTML Seite (index.ejs) können alle drei API Requests getestet 
-werden.
+Die Default [Startseite ("Homepage")](/views/index.ejs)  wird angepasst, so dass
+alle drei API Requests im Browser ausprobiert werden können.
+
+Die API wird als sog. Route in [cards.js](/routes/cards.js) angelegt und
+enthält die drei möglichen Endpunkte, die sich die Daten aus einem [Array](/lib/cards.js)
+holt.
+
+```javascript
+// API endpoints - requests goes here
+router.get('/:endpoint', function(req, res, next) {
+    if (req.params.endpoint === 'question') {
+        res.status(200).send({ question: question() });
+    } else if (req.params.endpoint === 'answer') {
+        res.status(200).send({ answer: answer() });
+    } else if (req.params.endpoint === 'pick') {
+        res.status(200).send(pick());
+    } else {
+        res.status(404).send({ error: 'Not found' })
+    }
+    next();
+});
+```
+
+Die neuen Routen werden in der [app.js](/app.js) zugefügt:
+```javascript
+app.use('/api', apiRoutes); 
+```
+
+Der Rest der generierten App bleibt zunächst unverändert.
+
 
