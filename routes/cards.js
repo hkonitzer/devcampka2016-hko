@@ -2,7 +2,6 @@
 var express = require('express');
 var cards = require(__dirname + '/../lib/cards');
 var router = express.Router();
-var logstash = require(__dirname + '/../lib/logstash')();
 
 var nQuestions = cards.questions.length,
     nAnswers = cards.answers.length;

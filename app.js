@@ -30,7 +30,8 @@ app.use(function(req, res, next) {
     next();
 });
 
+var logstash = require(__dirname + '/lib/logstash')();
 app.use('/', routes);
-app.use('/api', apiRoutes);
+app.use('/api', [logstash.send, apiRoutes]); // logstash route should be first, because the .send method waits for the finish event of the response
 
 module.exports = app;
