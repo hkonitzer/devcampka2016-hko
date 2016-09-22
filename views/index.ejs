@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow" />
+    <title><%= title %></title>
+    <script src="/javascripts/jquery-3.1.0.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <div>API endpoints exposed to:
+        <ul>
+            <li><a href="/api/question">/api/question</a>&thinsp;&mdash;&thinsp;<button class="requestApi" data-endpoint="/api/question">Aufrufen</button></li>
+            <li><a href="/api/answer">/api/answer</a>&thinsp;&mdash;&thinsp;<button class="requestApi" data-endpoint="/api/answer">Aufrufen</button></li>
+            <li><a href="/api/pick">/api/pick</a>&thinsp;&mdash;&thinsp;<button class="requestApi" data-endpoint="/api/pick">Aufrufen</button></li>
+        </ul>
+    </div>
+    <script>
+        var requestAPI = function(url, callback) {
+            $.get(url)
+                    .done(function (data) {
+                        callback(data);
+                    })
+                    .fail(function(error) {
+                        console.error(error);
+                    });
+        };
+
+        var showAPIResponse = function(data) {
+            $('#answerContainer').empty();
+            for (var key in data) {
+                var pElem = $('<p>');
+                pElem.append('<span>' + key + '</span>');
+                pElem.append('&thinsp;:&thinsp;');
+                pElem.append('<span>' + data[key] + '</span>');
+                $('#answerContainer').append(pElem);
+            }
+        };
+
+        $('button.requestApi').on('click', function(ev) {
+            ev.preventDefault();
+            requestAPI($(this).data('endpoint'), showAPIResponse);
+        })
+
+    </script>
+    <div id="answerContainer">
+
+    </div>
+    <div class="div-wrapper">
+        <img width="200" src="/images/2000px-Heine_Versand_20xx_logo.svg.png"/>
+    </div>
+</body>
+</html>
