@@ -1,0 +1,4 @@
+GET http://localhost:3000/api/question
+GET http://localhost:3000/api/answer
+GET http://localhost:3000/api/pick
+GET http://localhost:3000/api/endpunktungueltig

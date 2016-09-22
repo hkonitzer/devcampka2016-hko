@@ -8,7 +8,7 @@ im [DevCamp Karlsruhe 2016](http://www.campus-devcamp.de/devcamp-karlsruhe-23-24
 
 Die Session will zeigen, wie man eine in NodeJS implementierte Web-App/
 -Server mit einfachen Mitteln via dem Elastic Stack montioren kann. 
-Dabei geht es zunächst, um die Aufzeichnung der Antwortzeiten sowie der 
+Dabei geht es unter anderem, um die Aufzeichnung der Antwortzeiten sowie der 
 Anzahl der Requests.
 
 Als Demo dient eine einfache REST-API mit drei Endpunkten die JSON 
@@ -206,3 +206,47 @@ Die Middleware kann hier an erster Position (im Array) stehen, da sie sowieso
 auf das "finish" Event der "Response" wartet.
 
 Jetzt wird bei jedem Request gegen die /api eine Nachricht an Logstash gesendet.
+
+## 4. Schritt
+
+Wir erzeugen Last auf den API-Endpunkten mit Vegeta, einem "load testing tool".
+
+Damit die Antwortzeiten varieren, wird eine künstliche Aktivität in der API 
+ simuliert: Ein simples .setTimeout warten eine zufällige Zahl an Millisekunden
+ bis die Antwort gesendet wird. Ausserdem wird in etwa jeder 10. Antwort ein 
+ Fehler simuliert, beim mit HTTP Statuscode 500 geantwortet wird.
+
+```javascript
+// API endpoints - requests goes here
+router.get('/:endpoint', function(req, res, next) {
+    setTimeout(function() { // simulate i/o (e.g. database) activity
+        var statusCode;
+        if (Math.random() <= 0.1) { // simulate an error every 10th request
+            res.status(500).send({ error: 'Internal error' });
+        } else {
+            if (req.params.endpoint === 'question') {
+                res.status(200).send({ question: question() });
+            } else if (req.params.endpoint === 'answer') {
+                res.status(200).send({ answer: answer() });
+            } else if (req.params.endpoint === 'pick') {
+                res.status(200).send(pick());
+            } else {
+                res.status(404).send({ error: 'Not found' });
+            }
+        }
+        next();
+    }, Math.floor(Math.random()*250));
+});
+```
+
+Vegeta bekommt die Ziele, also die API-Endpunkte via [Konfiguration als Text-Datei](/docs/vegeta/targets.txt)
+und wird mit einer vorgegebenen Dauer (Parameter "duration") und maximalen 
+Anzahl Anfragen pro Sekunde (Parameter "rate") gestartet. Vegeta erzeugt beim 
+ Ausführen einen Report, der durchgereicht und am Ende als Text angezeigt wird.
+
+```
+vegeta.exe attack -targets="docs\vegeta\targets.txt" -duration=300s -rate=1000 | tee results.bin | vegeta report
+```
+
+Sofern alle Dienste gestartet wurden, können die einlaufenden Requests in 
+Kibana betrachtet und aufbereitet werden.

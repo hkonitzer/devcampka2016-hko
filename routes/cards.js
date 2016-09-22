@@ -23,16 +23,23 @@ router.use(function(req, res, next) {
 
 // API endpoints - requests goes here
 router.get('/:endpoint', function(req, res, next) {
-    if (req.params.endpoint === 'question') {
-        res.status(200).send({ question: question() });
-    } else if (req.params.endpoint === 'answer') {
-        res.status(200).send({ answer: answer() });
-    } else if (req.params.endpoint === 'pick') {
-        res.status(200).send(pick());
-    } else {
-        res.status(404).send({ error: 'Not found' })
-    }
-    next();
+    setTimeout(function() { // simulate i/o (e.g. database) activity
+        var statusCode;
+        if (Math.random() <= 0.1) { // simulate an error every 10th request
+            res.status(500).send({ error: 'Internal error' });
+        } else {
+            if (req.params.endpoint === 'question') {
+                res.status(200).send({ question: question() });
+            } else if (req.params.endpoint === 'answer') {
+                res.status(200).send({ answer: answer() });
+            } else if (req.params.endpoint === 'pick') {
+                res.status(200).send(pick());
+            } else {
+                res.status(404).send({ error: 'Not found' });
+            }
+        }
+        next();
+    }, Math.floor(Math.random()*250));
 });
 
 module.exports = router;
